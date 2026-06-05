@@ -12,23 +12,23 @@ interface BentoGridProps {
 
 const container = {
   hidden: {},
-  show: {
-    transition: {
-      staggerChildren: 0.1,
-    },
-  },
+  show: { transition: { staggerChildren: 0.08 } },
 }
 
 const item = {
-  hidden: { opacity: 0, y: 16 },
+  hidden: { opacity: 0, y: 20 },
   show: {
     opacity: 1,
     y: 0,
-    transition: { type: 'spring', stiffness: 280, damping: 24 },
+    transition: { type: 'spring', stiffness: 260, damping: 22 },
   },
 }
 
 export default function BentoGrid({ courses }: BentoGridProps) {
+  const avgProgress = courses.length
+    ? Math.round(courses.reduce((acc, c) => acc + c.progress, 0) / courses.length)
+    : 0
+
   return (
     <motion.div
       variants={container}
@@ -41,30 +41,63 @@ export default function BentoGrid({ courses }: BentoGridProps) {
         <HeroTile />
       </motion.div>
 
-      {/* Stats stub tile */}
+      {/* Avg progress stat */}
       <motion.div variants={item}>
-        <article className="rounded-xl border border-white/[0.06] bg-[#0d0d0f] p-5 h-full min-h-[180px] flex flex-col justify-between">
-          <p className="text-[11px] uppercase tracking-[0.12em] text-white/25 font-mono">
-            Completion
+        <motion.article
+          whileHover={{ scale: 1.02, y: -2 }}
+          transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+          className="relative rounded-2xl border border-white/[0.07] p-6 h-full min-h-[220px] flex flex-col justify-between overflow-hidden group cursor-default"
+          style={{ background: 'linear-gradient(135deg, #0d0d12 0%, #0a0a10 100%)' }}
+        >
+          <div
+            aria-hidden
+            className="absolute -top-10 -right-10 w-40 h-40 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700"
+            style={{ background: 'radial-gradient(circle, rgba(59,130,246,0.1) 0%, transparent 70%)' }}
+          />
+          <div
+            aria-hidden
+            className="absolute top-0 left-4 right-4 h-[1px] opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+            style={{ background: 'linear-gradient(90deg, transparent, rgba(59,130,246,0.4), transparent)' }}
+          />
+
+          <p className="font-jetbrains text-[10px] uppercase tracking-[0.15em] text-white/20">
+            Avg Progress
           </p>
+
           <div>
-            <p className="text-3xl font-semibold text-white/80 tracking-tight">
-              {courses.length > 0
-                ? Math.round(
-                    courses.reduce((acc, c) => acc + c.progress, 0) / courses.length
-                  )
-                : 0}
-              <span className="text-lg text-white/30">%</span>
+            <div className="flex items-end gap-1 mb-3">
+              <motion.p
+                className="font-syne text-5xl font-bold text-white/80 leading-none"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+              >
+                {avgProgress}
+              </motion.p>
+              <span className="font-syne text-2xl text-white/20 mb-1">%</span>
+            </div>
+
+            {/* Mini progress */}
+            <div className="h-[2px] w-full rounded-full bg-white/[0.05] overflow-hidden">
+              <motion.div
+                className="h-full rounded-full"
+                style={{ background: 'linear-gradient(90deg, rgba(59,130,246,0.6), rgba(139,92,246,0.6))' }}
+                initial={{ width: '0%' }}
+                animate={{ width: `${avgProgress}%` }}
+                transition={{ type: 'spring', stiffness: 50, damping: 15, delay: 0.6 }}
+              />
+            </div>
+            <p className="font-jetbrains text-[10px] text-white/20 mt-2">
+              across {courses.length} courses
             </p>
-            <p className="text-[12px] text-white/30 mt-1">avg across {courses.length} courses</p>
           </div>
-        </article>
+        </motion.article>
       </motion.div>
 
       {/* Course cards */}
-      {courses.map((course) => (
+      {courses.map((course, i) => (
         <motion.div key={course.id} variants={item}>
-          <CourseCard course={course} />
+          <CourseCard course={course} index={i} />
         </motion.div>
       ))}
 
