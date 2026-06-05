@@ -2,45 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap');
-
 @layer base {
   * {
     box-sizing: border-box;
   }
 
-  :root {
-    --accent: 214 100% 60%;
-    --accent-glow: rgba(59, 130, 246, 0.15);
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
   }
 
-  ::-webkit-scrollbar {
-    width: 3px;
-    height: 3px;
+  ::-webkit-scrollbar-track {
+    background: transparent;
   }
-  ::-webkit-scrollbar-track { background: transparent; }
+
   ::-webkit-scrollbar-thumb {
-    background: rgba(255,255,255,0.07);
+    background: rgba(255, 255, 255, 0.08);
     border-radius: 2px;
   }
-}
 
-@layer utilities {
-  .glow-blue {
-    box-shadow: 0 0 30px rgba(59, 130, 246, 0.12), 0 0 60px rgba(59, 130, 246, 0.06);
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.14);
   }
-  .glow-blue-hover:hover {
-    box-shadow: 0 0 40px rgba(59, 130, 246, 0.18), 0 0 80px rgba(59, 130, 246, 0.08);
-  }
-  .text-gradient {
-    background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.5) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  .card-bg {
-    background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
-  }
-  .font-syne { font-family: 'Syne', sans-serif; }
-  .font-jetbrains { font-family: 'JetBrains Mono', monospace; }
 }
